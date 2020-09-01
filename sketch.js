@@ -4,7 +4,7 @@ let y_vals = [];
 let a, b, c, d;
 let dragging = false;
 
-const learningRate = 0.2;
+const learningRate = 0.1;
 const optimizer = tf.train.adam(learningRate);
 
 // Inicializo las variables
@@ -54,6 +54,12 @@ function draw() {
     // Si no estoy arrastrando entreno con los puntos que esten guardados
     tf.tidy(() => {
       if (x_vals.length > 0) {
+        console.log(
+          a.dataSync()[0],
+          b.dataSync()[0],
+          c.dataSync()[0],
+          d.dataSync()[0]
+        );
         const ys = tf.tensor1d(y_vals);
         optimizer.minimize(() => loss(predict(x_vals), ys));
       }
