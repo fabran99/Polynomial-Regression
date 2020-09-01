@@ -4,6 +4,7 @@ let y_vals = [];
 let a, b, c, d;
 let dragging = false;
 
+var funcSpan = document.getElementById("func");
 const learningRate = 0.1;
 const optimizer = tf.train.adam(learningRate);
 
@@ -14,6 +15,14 @@ function setup() {
   b = tf.variable(tf.scalar(random(-1, 1)));
   c = tf.variable(tf.scalar(random(-1, 1)));
   d = tf.variable(tf.scalar(random(-1, 1)));
+
+  funcSpan.innerHTML = `Funcion actual: ${a
+    .dataSync()[0]
+    .toFixed(2)}x^3 + ${b
+    .dataSync()[0]
+    .toFixed(2)}x^2 + ${c
+    .dataSync()[0]
+    .toFixed(2)}x + ${d.dataSync()[0].toFixed(2)} = y`;
 }
 
 // La funcion de loss es mean_square_error
@@ -54,12 +63,14 @@ function draw() {
     // Si no estoy arrastrando entreno con los puntos que esten guardados
     tf.tidy(() => {
       if (x_vals.length > 0) {
-        console.log(
-          a.dataSync()[0],
-          b.dataSync()[0],
-          c.dataSync()[0],
-          d.dataSync()[0]
-        );
+        funcSpan.innerHTML = `Funcion actual: ${a
+          .dataSync()[0]
+          .toFixed(2)}x^3 + ${b
+          .dataSync()[0]
+          .toFixed(2)}x^2 + ${c
+          .dataSync()[0]
+          .toFixed(2)}x + ${d.dataSync()[0].toFixed(2)} = y`;
+
         const ys = tf.tensor1d(y_vals);
         optimizer.minimize(() => loss(predict(x_vals), ys));
       }
